@@ -28,8 +28,8 @@ const mTabs = [
   { id: "campaigns", label: "Campanhas", Icon: Megaphone },
   { id: "scoring-rules", label: "Regras de Pontos", Icon: Sliders },
   { id: "qr-store", label: "QR no Balcão", Icon: QrCode },
-  { id: "customers", label: "Base de Clientes", Icon: Users },
-  { id: "vitrine", label: "Vitrine de Prêmios", Icon: Layers },
+  { id: "customers", label: "Clientes", Icon: Users },
+  { id: "vitrine", label: "Vitrine", Icon: Layers },
   { id: "settings", label: "Configurações", Icon: Settings },
 ];
 
@@ -49,11 +49,11 @@ export function MerchantApp() {
   }
 
   return (
-    <div className="flex flex-col flex-1 w-full bg-purple-50/30 min-h-full">
-      {/* Top Secondary Navigation for Merchant Web App */}
-      <div className="bg-white border-b border-purple-100 sticky top-16 z-30 shadow-xs">
+    <div className="flex flex-col flex-1 w-full bg-purple-50/20 min-h-full">
+      {/* Top Secondary Navigation for Merchant Web App (Sleek & Compact) */}
+      <div className="bg-white border-b border-purple-100/70 sticky top-14 z-30 shadow-2xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <nav className="flex space-x-2 sm:space-x-3 overflow-x-auto py-3 no-scrollbar">
+          <nav className="flex space-x-1.5 sm:space-x-2 overflow-x-auto py-2 no-scrollbar">
             {mTabs.map((item) => {
               const isActive = screen === item.id;
               const Icon = item.Icon;
@@ -61,13 +61,13 @@ export function MerchantApp() {
                 <button
                   key={item.id}
                   onClick={() => changeTab(item.id)}
-                  className={`flex items-center gap-2.5 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all cursor-pointer ${
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
                     isActive
-                      ? "bg-purple-800 text-white shadow-sm shadow-purple-900/30"
+                      ? "bg-purple-800 text-white shadow-xs"
                       : "text-gray-600 hover:text-purple-950 hover:bg-purple-50"
                   }`}
                 >
-                  <Icon size={16} />
+                  <Icon size={14} />
                   <span>{item.label}</span>
                 </button>
               );
@@ -76,8 +76,8 @@ export function MerchantApp() {
         </div>
       </div>
 
-      {/* Main Content Area (Fluid for Desktop & Mobile) */}
-      <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
+      {/* Main Content Area */}
+      <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6">
         <div className="w-full">
           {screen === "dashboard" && <DashboardScreen go={go} />}
           {screen === "campaigns" && <CampaignsScreen go={go} />}

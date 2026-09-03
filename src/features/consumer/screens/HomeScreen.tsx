@@ -1,11 +1,8 @@
 ﻿import {
-  ShoppingBag,
   Star,
   QrCode,
   ArrowUpRight,
-  Sparkles,
   ChevronRight,
-  TrendingUp,
   Percent,
 } from "lucide-react";
 import { G, GD, GOLD } from "@/constants/theme";
@@ -25,221 +22,211 @@ export function HomeScreen({ go }: HomeScreenProps) {
   });
 
   return (
-    <div className="space-y-8 animate-fade-in">
+    <div className="space-y-6 animate-fade-in">
       {/* Top Welcome Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-3xl border border-gray-200/80 shadow-xs">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-5 rounded-2xl border border-gray-200/70 shadow-2xs">
         <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-bold uppercase tracking-wider">
+          <div className="flex items-center gap-1.5 mb-1">
+            <span className="px-2 py-0.5 rounded-full bg-emerald-100/90 text-emerald-800 text-[10px] font-bold uppercase tracking-wider">
               Painel do Consumidor
             </span>
-            <span className="text-xs text-gray-400">•</span>
-            <span className="text-xs text-gray-500">Programa de Fidelidade NFC-e</span>
+            <span className="text-xs text-gray-300">•</span>
+            <span className="text-xs text-gray-400">Programa de Fidelidade NFC-e</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
+          <h1 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight">
             Olá, {userName}! 👋
           </h1>
-          <p className="text-sm text-gray-500 mt-0.5">
-            Acumule pontos em cada nota fiscal emitida e troque por descontos nas melhores lojas locais.
+          <p className="text-xs text-gray-500 mt-0.5">
+            Acumule pontos em notas fiscais e troque por descontos nas melhores lojas locais.
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
-          <button
-            onClick={() => go("qr-code")}
-            className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-bold px-4 py-2.5 rounded-xl shadow-md shadow-emerald-600/20 transition-all cursor-pointer hover:scale-[1.02]"
-          >
-            <QrCode size={18} />
-            <span>Escanear Nota Fiscal</span>
-          </button>
-        </div>
+        <button
+          onClick={() => go("qr-code")}
+          className="flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow-xs transition-all cursor-pointer hover:scale-[1.02] self-start sm:self-auto"
+        >
+          <QrCode size={15} />
+          <span>Escanear Cupom</span>
+        </button>
       </div>
 
       {/* Hero Cards Grid (3 Columns) */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* Card 1: Saldo de Pontos */}
         <div
-          className="rounded-3xl p-6 text-white relative overflow-hidden shadow-lg shadow-emerald-700/15 flex flex-col justify-between"
+          className="rounded-2xl p-5 text-white relative overflow-hidden shadow-md shadow-emerald-700/10 flex flex-col justify-between"
           style={{ background: `linear-gradient(135deg, ${G}, ${GD})` }}
         >
-          <div className="absolute -right-6 -top-6 w-32 h-32 rounded-full bg-white/10 pointer-events-none" />
+          <div className="absolute -right-4 -top-4 w-24 h-24 rounded-full bg-white/10 pointer-events-none" />
           <div>
-            <div className="flex items-center justify-between mb-4">
-              <span className="text-xs font-semibold uppercase tracking-wider text-emerald-100">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-emerald-100">
                 Saldo Disponível
               </span>
-              <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center backdrop-blur-xs">
-                <Star size={18} color={GOLD} fill={GOLD} />
+              <div className="w-7 h-7 rounded-lg bg-white/20 flex items-center justify-center backdrop-blur-xs">
+                <Star size={15} color={GOLD} fill={GOLD} />
               </div>
             </div>
-            <div className="flex items-baseline gap-2">
-              <span className="text-4xl sm:text-5xl font-black tracking-tight">
+            <div className="flex items-baseline gap-1.5">
+              <span className="text-3xl sm:text-4xl font-black tracking-tight leading-none">
                 {userPoints.toLocaleString("pt-BR")}
               </span>
-              <span className="text-lg font-bold text-emerald-200">pts</span>
+              <span className="text-sm font-semibold text-emerald-200">pts</span>
             </div>
-            <p className="text-xs text-emerald-100/90 mt-1">
-              Equivale a cerca de <strong className="text-white">{estimatedCashback}</strong> em descontos
+            <p className="text-[11px] text-emerald-100/90 mt-1">
+              Aprox. <strong className="text-white">{estimatedCashback}</strong> em descontos
             </p>
           </div>
 
-          <div className="mt-6 pt-4 border-t border-white/20 flex items-center justify-between">
+          <div className="mt-4 pt-3 border-t border-white/20 flex items-center justify-between">
             <button
               onClick={() => go("wallet")}
-              className="text-xs font-bold text-white flex items-center gap-1 hover:underline cursor-pointer"
+              className="text-xs font-semibold text-white flex items-center gap-1 hover:underline cursor-pointer"
             >
-              Ver Extrato Detalhado <ArrowUpRight size={14} />
+              Ver Extrato <ArrowUpRight size={13} />
             </button>
           </div>
         </div>
 
         {/* Card 2: Leitor NFC-e Instantâneo */}
-        <div className="rounded-3xl p-6 bg-white border border-gray-200/80 shadow-xs flex flex-col justify-between hover:border-emerald-300 transition-colors">
+        <div className="rounded-2xl p-5 bg-white border border-gray-200/70 shadow-2xs flex flex-col justify-between hover:border-emerald-300 transition-colors">
           <div>
-            <div className="flex items-center justify-between mb-4">
-              <span className="text-xs font-bold uppercase tracking-wider text-gray-500">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-gray-400">
                 Pontuar com Cupom
               </span>
-              <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center">
-                <QrCode size={18} />
+              <div className="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center">
+                <QrCode size={15} />
               </div>
             </div>
-            <h3 className="text-lg font-bold text-gray-900 mb-1">Leu uma nota fiscal hoje?</h3>
-            <p className="text-xs text-gray-500 leading-relaxed">
-              Notas fiscais emitidas em Santa Catarina e Paraná acumulam pontos em até 48 horas da compra.
+            <h3 className="text-sm font-bold text-gray-900 mb-0.5">Leu uma nota fiscal hoje?</h3>
+            <p className="text-xs text-gray-400 leading-relaxed">
+              Notas fiscais de SC e PR acumulam pontos em até 48h da compra.
             </p>
           </div>
 
           <button
             onClick={() => go("qr-code")}
-            className="mt-6 w-full py-2.5 px-4 bg-gray-100 hover:bg-emerald-50 hover:text-emerald-800 text-gray-700 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-colors cursor-pointer"
+            className="mt-4 w-full py-2 px-3 bg-gray-50 hover:bg-emerald-50 hover:text-emerald-800 text-gray-600 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer border border-gray-100"
           >
             <span>Inserir Chave de 44 Dígitos</span>
-            <ArrowUpRight size={14} />
+            <ArrowUpRight size={13} />
           </button>
         </div>
 
-        {/* Card 3: Status das Ofertas Prontas */}
-        <div className="rounded-3xl p-6 bg-white border border-gray-200/80 shadow-xs flex flex-col justify-between hover:border-emerald-300 transition-colors">
+        {/* Card 3: Cupons Prontos */}
+        <div className="rounded-2xl p-5 bg-white border border-gray-200/70 shadow-2xs flex flex-col justify-between hover:border-emerald-300 transition-colors">
           <div>
-            <div className="flex items-center justify-between mb-4">
-              <span className="text-xs font-bold uppercase tracking-wider text-gray-500">
-                Resgates Imediatos
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-gray-400">
+                Resgates Prontos
               </span>
-              <div className="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
-                <Percent size={18} />
+              <div className="w-7 h-7 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
+                <Percent size={15} />
               </div>
             </div>
-            <h3 className="text-lg font-bold text-gray-900 mb-1">Você tem cupons disponíveis!</h3>
-            <p className="text-xs text-gray-500 leading-relaxed">
-              Com seu saldo atual de {userPoints} pontos, você já pode resgatar ofertas na Padaria Real e Farmácia Central.
+            <h3 className="text-sm font-bold text-gray-900 mb-0.5">Cupons disponíveis!</h3>
+            <p className="text-xs text-gray-400 leading-relaxed">
+              Com seu saldo de {userPoints} pts, você já pode resgatar ofertas na Padaria e Farmácia.
             </p>
           </div>
 
           <button
             onClick={() => go("offers")}
-            className="mt-6 w-full py-2.5 px-4 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-colors cursor-pointer"
+            className="mt-4 w-full py-2 px-3 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer border border-emerald-100"
           >
-            <span>Explorar Vitrine de Recompensas</span>
-            <ChevronRight size={14} />
+            <span>Ver Vitrine de Recompensas</span>
+            <ChevronRight size={13} />
           </button>
         </div>
       </div>
 
       {/* Categories Section */}
-      <section className="bg-white p-6 rounded-3xl border border-gray-200/80 shadow-xs">
-        <div className="flex items-center justify-between mb-5">
+      <section className="bg-white p-5 rounded-2xl border border-gray-200/70 shadow-2xs">
+        <div className="flex items-center justify-between mb-4">
           <div>
-            <h2 className="text-lg font-bold text-gray-900 tracking-tight">
-              Categorias em Destaque
-            </h2>
-            <p className="text-xs text-gray-500">Explore parceiros por segmento no comércio local</p>
+            <h2 className="text-base font-bold text-gray-900">Categorias</h2>
+            <p className="text-[11px] text-gray-400">Explore parceiros por segmento no comércio local</p>
           </div>
           <button
             onClick={() => go("categories")}
-            className="text-xs font-bold text-emerald-700 hover:underline flex items-center gap-1 cursor-pointer"
+            className="text-xs font-semibold text-emerald-700 hover:underline flex items-center gap-0.5 cursor-pointer"
           >
-            Ver Todas as Categorias <ChevronRight size={14} />
+            Ver Todas <ChevronRight size={13} />
           </button>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
           {categories.map((cat) => (
             <button
               key={cat.name}
               onClick={() => go("stores")}
-              className="group flex flex-col items-center p-4 rounded-2xl border border-gray-100 hover:border-emerald-300 hover:shadow-md transition-all cursor-pointer bg-gray-50/50 hover:bg-white"
+              className="group flex flex-col items-center p-3 rounded-xl border border-gray-100 hover:border-emerald-300 hover:shadow-xs transition-all cursor-pointer bg-gray-50/40 hover:bg-white"
             >
               <div
-                className="w-12 h-12 rounded-2xl flex items-center justify-center mb-2.5 shadow-xs group-hover:scale-110 transition-transform"
+                className="w-10 h-10 rounded-xl flex items-center justify-center mb-1.5 shadow-2xs group-hover:scale-105 transition-transform"
                 style={{ background: cat.bg }}
               >
-                <cat.Icon size={22} color={cat.color} />
+                <cat.Icon size={18} color={cat.color} />
               </div>
-              <span className="text-xs font-bold text-gray-800 text-center">{cat.name}</span>
-              <span className="text-[10px] text-gray-400 mt-0.5">Ver lojas</span>
+              <span className="text-xs font-semibold text-gray-800 text-center">{cat.name}</span>
             </button>
           ))}
         </div>
       </section>
 
       {/* Featured Offers Grid */}
-      <section className="bg-white p-6 rounded-3xl border border-gray-200/80 shadow-xs">
-        <div className="flex items-center justify-between mb-6">
+      <section className="bg-white p-5 rounded-2xl border border-gray-200/70 shadow-2xs">
+        <div className="flex items-center justify-between mb-4">
           <div>
-            <h2 className="text-lg font-bold text-gray-900 tracking-tight">
-              Cupons & Recompensas em Destaque
-            </h2>
-            <p className="text-xs text-gray-500">Troque seus pontos acumulados por vantagens imediatas</p>
+            <h2 className="text-base font-bold text-gray-900">Cupons em Destaque</h2>
+            <p className="text-[11px] text-gray-400">Troque seus pontos acumulados por vantagens na hora</p>
           </div>
           <button
             onClick={() => go("offers")}
-            className="text-xs font-bold text-emerald-700 hover:underline flex items-center gap-1 cursor-pointer"
+            className="text-xs font-semibold text-emerald-700 hover:underline flex items-center gap-0.5 cursor-pointer"
           >
-            Ver Todos os Cupons <ChevronRight size={14} />
+            Ver Todos <ChevronRight size={13} />
           </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {offers.map((o) => (
             <div
               key={o.id}
               onClick={() => go("offer-detail")}
-              className="group rounded-2xl border border-gray-200/80 overflow-hidden hover:shadow-xl hover:border-emerald-400 transition-all cursor-pointer flex flex-col bg-white"
+              className="group rounded-xl border border-gray-200/70 overflow-hidden hover:shadow-md hover:border-emerald-300 transition-all cursor-pointer flex flex-col bg-white"
             >
-              <div className="h-44 relative overflow-hidden bg-gray-100">
+              <div className="h-36 relative overflow-hidden bg-gray-100">
                 <img
                   src={o.img}
                   alt={o.store}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
-                <div className="absolute top-3 left-3">
-                  <span className="bg-white/95 backdrop-blur-xs text-gray-900 text-xs font-bold px-3 py-1 rounded-full shadow-xs">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+                <div className="absolute top-2.5 left-2.5">
+                  <span className="bg-white/95 text-gray-900 text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow-2xs">
                     {o.store}
                   </span>
                 </div>
-                <div className="absolute bottom-3 left-3 right-3 text-white">
-                  <p className="text-xl font-black leading-tight drop-shadow-xs">
+                <div className="absolute bottom-2.5 left-2.5 right-2.5 text-white">
+                  <p className="text-base font-black leading-tight drop-shadow-xs">
                     {o.discount}
                   </p>
                 </div>
               </div>
 
-              <div className="p-4 flex-1 flex flex-col justify-between">
-                <div>
-                  <div className="flex items-center justify-between text-xs text-gray-500 mb-2">
-                    <span>Custo do Resgate:</span>
-                    <span className="font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md">
-                      {o.pts} pontos
-                    </span>
-                  </div>
-                  <p className="text-xs text-gray-400">Válido até {o.valid}</p>
+              <div className="p-3.5 flex-1 flex flex-col justify-between">
+                <div className="flex items-center justify-between text-xs text-gray-500 mb-1">
+                  <span>Custo:</span>
+                  <span className="font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md">
+                    {o.pts} pts
+                  </span>
                 </div>
-
-                <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between">
-                  <span className="text-xs font-bold text-emerald-600 group-hover:translate-x-1 transition-transform flex items-center gap-1">
-                    Ver detalhes do cupom <ChevronRight size={14} />
+                <div className="flex items-center justify-between text-[11px] text-gray-400 pt-2 border-t border-gray-100 mt-2">
+                  <span>Válido até {o.valid}</span>
+                  <span className="font-semibold text-emerald-600 group-hover:translate-x-0.5 transition-transform flex items-center">
+                    Ver cupom <ChevronRight size={12} />
                   </span>
                 </div>
               </div>
@@ -249,54 +236,52 @@ export function HomeScreen({ go }: HomeScreenProps) {
       </section>
 
       {/* Featured Stores Grid */}
-      <section className="bg-white p-6 rounded-3xl border border-gray-200/80 shadow-xs">
-        <div className="flex items-center justify-between mb-6">
+      <section className="bg-white p-5 rounded-2xl border border-gray-200/70 shadow-2xs">
+        <div className="flex items-center justify-between mb-4">
           <div>
-            <h2 className="text-lg font-bold text-gray-900 tracking-tight">
-              Lojas Parceiras Credenciadas
-            </h2>
-            <p className="text-xs text-gray-500">Estabelecimentos onde suas notas fiscais geram pontos garantidos</p>
+            <h2 className="text-base font-bold text-gray-900">Lojas Parceiras</h2>
+            <p className="text-[11px] text-gray-400">Onde suas notas fiscais geram pontos garantidos</p>
           </div>
           <button
             onClick={() => go("stores")}
-            className="text-xs font-bold text-emerald-700 hover:underline flex items-center gap-1 cursor-pointer"
+            className="text-xs font-semibold text-emerald-700 hover:underline flex items-center gap-0.5 cursor-pointer"
           >
-            Ver Todas as Lojas <ChevronRight size={14} />
+            Ver Todas <ChevronRight size={13} />
           </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3.5">
           {stores.map((s) => (
             <div
               key={s.id}
               onClick={() => go("store-detail")}
-              className="p-5 rounded-2xl border border-gray-200/80 hover:border-emerald-400 hover:shadow-lg transition-all cursor-pointer flex flex-col justify-between bg-white group"
+              className="p-4 rounded-xl border border-gray-200/70 hover:border-emerald-300 hover:shadow-xs transition-all cursor-pointer flex flex-col justify-between bg-white group"
             >
               <div>
-                <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center justify-between mb-2.5">
                   <div
-                    className="w-12 h-12 rounded-2xl flex items-center justify-center font-bold text-base shadow-xs"
+                    className="w-10 h-10 rounded-xl flex items-center justify-center font-bold text-sm shadow-2xs"
                     style={{ background: s.bg, color: s.color }}
                   >
                     {s.name.slice(0, 2).toUpperCase()}
                   </div>
-                  <span className="text-[11px] font-semibold bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">
+                  <span className="text-[10px] font-semibold bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">
                     {s.cat}
                   </span>
                 </div>
-                <h3 className="text-base font-bold text-gray-900 group-hover:text-emerald-700 transition-colors">
+                <h3 className="text-sm font-bold text-gray-900 group-hover:text-emerald-700 transition-colors">
                   {s.name}
                 </h3>
-                <p className="text-xs text-gray-400 mt-0.5">{s.loc}</p>
-                <div className="mt-3 p-2 bg-emerald-50/60 rounded-xl border border-emerald-100">
-                  <p className="text-[11px] font-bold text-emerald-800">
+                <p className="text-[11px] text-gray-400 mt-0.5">{s.loc}</p>
+                <div className="mt-2.5 p-1.5 bg-emerald-50/70 rounded-lg border border-emerald-100/70">
+                  <p className="text-[10px] font-bold text-emerald-800">
                     {s.rule}
                   </p>
                 </div>
               </div>
 
-              <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between text-xs">
-                <span className="text-gray-500">Pontos disponíveis:</span>
+              <div className="mt-3 pt-2.5 border-t border-gray-100 flex items-center justify-between text-xs">
+                <span className="text-gray-400 text-[11px]">Seu saldo:</span>
                 <span className="font-bold text-emerald-700">{s.pts} pts</span>
               </div>
             </div>

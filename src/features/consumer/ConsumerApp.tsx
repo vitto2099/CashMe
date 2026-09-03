@@ -1,6 +1,5 @@
 ﻿import { useState } from "react";
 import { Home, Store, Wallet, Tag, QrCode, User } from "lucide-react";
-import { G, BG } from "@/constants/theme";
 import type { ConsumerScreen } from "@/types/navigation";
 import {
   HomeScreen,
@@ -16,11 +15,11 @@ import {
 
 const cTabs = [
   { id: "home", label: "Início", Icon: Home },
-  { id: "stores", label: "Lojas", Icon: Store },
-  { id: "offers", label: "Ofertas", Icon: Tag },
-  { id: "wallet", label: "Carteira", Icon: Wallet },
-  { id: "qr-code", label: "Meu QR", Icon: QrCode },
-  { id: "profile", label: "Perfil", Icon: User },
+  { id: "stores", label: "Lojas Parceiras", Icon: Store },
+  { id: "offers", label: "Ofertas & Cupons", Icon: Tag },
+  { id: "wallet", label: "Minha Carteira", Icon: Wallet },
+  { id: "qr-code", label: "NFC-e & QR Code", Icon: QrCode },
+  { id: "profile", label: "Meu Perfil", Icon: User },
 ];
 
 export function ConsumerApp() {
@@ -41,25 +40,28 @@ export function ConsumerApp() {
   }
 
   return (
-    <div className="flex flex-col flex-1 w-full bg-[#F8F9FA] min-h-full">
-      {/* Top Secondary Navigation for Consumer Web App */}
-      <div className="bg-white border-b border-gray-200/80 sticky top-16 z-30 shadow-xs">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6">
-          <nav className="flex space-x-1 sm:space-x-4 overflow-x-auto py-2.5 no-scrollbar">
+    <div className="flex flex-col flex-1 w-full bg-gray-50/70 min-h-full">
+      {/* Sub-Header Navigation Tabs (Responsive & Sticky) */}
+      <div className="bg-white border-b border-gray-200 sticky top-16 z-30 shadow-xs">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <nav className="flex space-x-2 sm:space-x-4 overflow-x-auto py-3 no-scrollbar">
             {cTabs.map((item) => {
-              const isActive = (screen === item.id) || (tab === item.id && ["home", "stores", "offers", "wallet", "qr-code", "profile"].includes(screen));
+              const isActive =
+                screen === item.id ||
+                (tab === item.id &&
+                  ["home", "stores", "offers", "wallet", "qr-code", "profile"].includes(screen));
               const Icon = item.Icon;
               return (
                 <button
                   key={item.id}
                   onClick={() => changeTab(item.id)}
-                  className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition-all cursor-pointer ${
+                  className={`flex items-center gap-2.5 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all cursor-pointer ${
                     isActive
-                      ? "bg-emerald-50 text-emerald-800 shadow-xs border border-emerald-200/80"
+                      ? "bg-emerald-600 text-white shadow-sm shadow-emerald-600/30"
                       : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
                   }`}
                 >
-                  <Icon size={16} className={isActive ? "text-emerald-700" : "text-gray-400"} />
+                  <Icon size={16} />
                   <span>{item.label}</span>
                 </button>
               );
@@ -68,9 +70,9 @@ export function ConsumerApp() {
         </div>
       </div>
 
-      {/* Screen Content Container (Fluid & Centered Web Width) */}
-      <main className="flex-1 max-w-4xl mx-auto w-full px-4 sm:px-6 py-6">
-        <div className="bg-white rounded-3xl border border-gray-200/80 shadow-sm overflow-hidden min-h-[600px] flex flex-col">
+      {/* Main Content Area (Fluid for Desktop & Mobile) */}
+      <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
+        <div className="w-full">
           {screen === "home" && <HomeScreen go={go} />}
           {screen === "categories" && <CategoriesScreen back={back} go={go} />}
           {screen === "stores" && <StoresScreen back={back} go={go} />}

@@ -1,36 +1,122 @@
-import { Download, Printer, Share2, RefreshCw } from "lucide-react";
-import { P, PD, PL, G, GL, T1, T2, BD } from "@/constants/theme";
+﻿import { Download, Printer, Share2, RefreshCw, QrCode, Store, Sparkles, CheckCircle2 } from "lucide-react";
+import { P, PD } from "@/constants/theme";
 import { QRCodeSVG } from "@/components/common";
+import { useApp } from "@/context/AppContext";
+import { toast } from "sonner";
 
 export function QRStoreScreen() {
+  const { merchantStoreName } = useApp();
+
+  const handleAction = (label: string) => {
+    toast.success(`Ação executada: ${label}`);
+  };
+
   return (
-    <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
-      <div style={{ background: `linear-gradient(135deg,${P},${PD})`, padding: "8px 16px 18px", flexShrink: 0 }}>
-        <h2 style={{ fontSize: 20, fontWeight: 700, color: "#fff", margin: 0 }}>QR Code da loja</h2>
-      </div>
-      <div style={{ flex: 1, overflow: "auto", padding: 16, background: "#F8F5FC" }}>
-        <p style={{ fontSize: 14, color: T2, textAlign: "center", margin: "0 0 18px", lineHeight: 1.5 }}>Peça para o cliente escanear no caixa para acumular ou resgatar pontos.</p>
-        <div style={{ background: "#fff", borderRadius: 20, padding: 24, display: "flex", flexDirection: "column", alignItems: "center", border: `1px solid ${BD}`, boxShadow: "0 8px 24px rgba(0,0,0,0.06)", marginBottom: 14 }}>
-          <QRCodeSVG size={190} color={P} />
-          <div style={{ marginTop: 16, textAlign: "center" }}>
-            <p style={{ fontSize: 16, fontWeight: 700, color: T1, margin: "0 0 2px" }}>Padaria Real</p>
-            <p style={{ fontSize: 13, color: T2, margin: 0 }}>Centro – Padaria</p>
-          </div>
+    <div className="space-y-8 animate-fade-in">
+      {/* Header */}
+      <div className="bg-white p-6 rounded-3xl border border-gray-200/80 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <span className="px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-800 text-[11px] font-bold uppercase tracking-wider">
+            Material de Balcão
+          </span>
+          <h1 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight mt-1">
+            QR Code Oficial do Estabelecimento
+          </h1>
+          <p className="text-sm text-gray-500 mt-0.5">
+            Imprima ou exiba este QR Code no caixa para que os clientes pontuem mesmo quando não levarem o cupom impresso.
+          </p>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
-          {[
-            { Icon: Download, label: "Baixar QR Code", c: G, bg: GL },
-            { Icon: Printer, label: "Imprimir QR Code", c: P, bg: PL },
-            { Icon: Share2, label: "Compartilhar", c: "#1E40AF", bg: "#DBEAFE" },
-            { Icon: RefreshCw, label: "Gerar novo", c: "#B45309", bg: "#FEF3C7" },
-          ].map((a) => (
-            <button key={a.label} style={{ background: "#fff", borderRadius: 12, padding: "14px 10px", border: `1px solid ${BD}`, display: "flex", flexDirection: "column", alignItems: "center", gap: 8, cursor: "pointer" }}>
-              <div style={{ width: 40, height: 40, background: a.bg, borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <a.Icon size={20} color={a.c} />
-              </div>
-              <span style={{ fontSize: 11, fontWeight: 500, color: T1, textAlign: "center" }}>{a.label}</span>
-            </button>
-          ))}
+
+        <button
+          onClick={() => handleAction("Imprimir Display de Mesa")}
+          className="flex items-center gap-2 bg-purple-800 hover:bg-purple-900 text-white text-xs sm:text-sm font-bold px-5 py-3 rounded-xl shadow-md shadow-purple-800/20 transition-all cursor-pointer"
+        >
+          <Printer size={18} />
+          <span>Imprimir Display de Caixa</span>
+        </button>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Main Display Box */}
+        <div className="lg:col-span-2 bg-white p-8 sm:p-12 rounded-3xl border border-gray-200/80 shadow-xs flex flex-col items-center text-center">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-purple-50 text-purple-800 text-xs font-bold rounded-full mb-6">
+            <Store size={14} />
+            <span>Ponto de Venda Oficial</span>
+          </div>
+
+          {/* QR Container */}
+          <div className="p-8 bg-gray-50 rounded-3xl border-2 border-dashed border-purple-200 inline-block shadow-inner mb-6">
+            <QRCodeSVG size={220} color={P} />
+            <div className="mt-4 pt-4 border-t border-gray-200">
+              <h3 className="text-xl font-black text-gray-900">{merchantStoreName}</h3>
+              <p className="text-xs text-gray-500 mt-0.5">CNPJ: 12.345.678/0001-90</p>
+              <span className="inline-block mt-2 font-mono text-[11px] text-purple-800 bg-purple-100 px-3 py-1 rounded-full font-bold">
+                ID LOJA: #CM-STORE-001
+              </span>
+            </div>
+          </div>
+
+          <p className="text-xs text-gray-400 max-w-sm">
+            Compatível com o aplicativo Cash Me e câmeras padrão de smartphones Android e iOS.
+          </p>
+        </div>
+
+        {/* Actions & Instructions */}
+        <div className="space-y-6">
+          <div className="bg-white p-6 rounded-3xl border border-gray-200/80 shadow-xs space-y-4">
+            <h3 className="text-base font-bold text-gray-900">Ações Rápidas de Exportação</h3>
+
+            <div className="space-y-3">
+              <button
+                onClick={() => handleAction("Download PNG em Alta Resolução")}
+                className="w-full p-3.5 rounded-2xl border border-gray-200 hover:border-purple-300 hover:bg-purple-50/40 transition-all flex items-center gap-3 cursor-pointer text-left"
+              >
+                <div className="w-10 h-10 rounded-xl bg-purple-100 text-purple-800 flex items-center justify-center">
+                  <Download size={18} />
+                </div>
+                <div>
+                  <h4 className="text-xs font-bold text-gray-900">Baixar Imagem PNG</h4>
+                  <p className="text-[11px] text-gray-500">Alta resolução para adesivos e displays</p>
+                </div>
+              </button>
+
+              <button
+                onClick={() => handleAction("Download PDF Pronto para Impressão")}
+                className="w-full p-3.5 rounded-2xl border border-gray-200 hover:border-purple-300 hover:bg-purple-50/40 transition-all flex items-center gap-3 cursor-pointer text-left"
+              >
+                <div className="w-10 h-10 rounded-xl bg-purple-100 text-purple-800 flex items-center justify-center">
+                  <Printer size={18} />
+                </div>
+                <div>
+                  <h4 className="text-xs font-bold text-gray-900">Display de Balcão (PDF)</h4>
+                  <p className="text-[11px] text-gray-500">Modelo pronto para imprimir e dobrar</p>
+                </div>
+              </button>
+
+              <button
+                onClick={() => handleAction("Link Copiado para Área de Transferência")}
+                className="w-full p-3.5 rounded-2xl border border-gray-200 hover:border-purple-300 hover:bg-purple-50/40 transition-all flex items-center gap-3 cursor-pointer text-left"
+              >
+                <div className="w-10 h-10 rounded-xl bg-purple-100 text-purple-800 flex items-center justify-center">
+                  <Share2 size={18} />
+                </div>
+                <div>
+                  <h4 className="text-xs font-bold text-gray-900">Compartilhar Link</h4>
+                  <p className="text-[11px] text-gray-500">Envie por WhatsApp ou Redes Sociais</p>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          <div className="bg-purple-50 border border-purple-200 p-6 rounded-3xl space-y-3">
+            <h4 className="text-xs font-bold text-purple-900 uppercase tracking-wider flex items-center gap-2">
+              <CheckCircle2 size={16} />
+              <span>Dica de Fidelização no Caixa</span>
+            </h4>
+            <p className="text-xs text-purple-950 leading-relaxed">
+              Oriente os atendentes a dizerem: <em>"Quer acumular pontos nesta compra? Aponte a câmera para o QR Code no balcão ou escaneie o rodapé da nota fiscal!"</em>
+            </p>
+          </div>
         </div>
       </div>
     </div>

@@ -1,8 +1,7 @@
-import { useState } from "react";
-import { Star } from "lucide-react";
-import { G, GOLD, T1, T2, BG } from "@/constants/theme";
+﻿import { useState } from "react";
+import { Tag, Sparkles, Check, ChevronRight, Gift } from "lucide-react";
 import { offers } from "@/data/mocks";
-import { BackBtn, SegControl } from "@/components/common";
+import { useApp } from "@/context/AppContext";
 import type { ConsumerScreen } from "@/types/navigation";
 
 interface OffersScreenProps {
@@ -11,39 +10,126 @@ interface OffersScreenProps {
 }
 
 export function OffersScreen({ back, go }: OffersScreenProps) {
-  const [tab, setTab] = useState("all");
+  const { userPoints, redeemPoints } = useApp();
+  const [filter, setFilter] = useState<"all" | "affordable" | "high">("all");
+
+  const filteredOffers = offers.filter((o) => {
+    if (filter === "affordable") return o.pts <= userPoints;
+    if (filter === "high") return o.pts > 500;
+    return true;
+  });
+
+  const handleRedeem = (o: (typeof offers)[0], e: React.MouseEvent) => {
+    e.stopPropagation();
+    redeemPoints(o.pts, o.store);
+  };
 
   return (
-    <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
-      <div style={{ background: "#fff", flexShrink: 0, paddingBottom: 12 }}>
-        <div style={{ padding: "12px 16px", display: "flex", alignItems: "center", gap: 12 }}>
-          <BackBtn onBack={back} />
-          <h2 style={{ fontSize: 18, fontWeight: 600, color: T1, margin: 0 }}>Ofertas para você</h2>
+    <div className="space-y-8 animate-fade-in">
+      {/* Header */}
+      <div className="bg-white p-6 rounded-3xl border border-gray-200/80 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-bold uppercase tracking-wider">
+            Recompensas & Benefícios
+          </span>
+          <h1 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight mt-1">
+            Ofertas & Cupons Disponíveis
+          </h1>
+          <p className="text-sm text-gray-500 mt-0.5">
+            Você tem <strong>{userPoints.toLocaleString("pt-BR")} pontos</strong> disponíveis para resgatar agora.
+          </p>
         </div>
-        <SegControl tabs={[{ id: "all", label: "Todas" }, { id: "mine", label: "Minhas lojas" }, { id: "new", label: "Novas" }]} active={tab} onChange={setTab} />
+
+        {/* Filter Buttons */}
+        <div className="flex bg-gray-100 p-1.5 rounded-2xl">
+          <button
+            onClick={() => setFilter("all")}
+            className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+              filter === "all" ? "bg-white text-emerald-800 shadow-xs" : "text-gray-500 hover:text-gray-900"
+            }`}
+          >
+            Todas ({offers.length})
+          </button>
+          <button
+            onClick={() => setFilter("affordable")}
+            className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+              filter === "affordable" ? "bg-white text-emerald-800 shadow-xs" : "text-gray-500 hover:text-gray-900"
+            }`}
+          >
+            Posso Resgatar Agora 🎯
+          </button>
+        </div>
       </div>
-      <div style={{ flex: 1, overflow: "auto", padding: "12px 16px 16px", background: BG }}>
-        {offers.map((o) => (
-          <div key={o.id} onClick={() => go("offer-detail")} style={{ borderRadius: 16, overflow: "hidden", marginBottom: 14, boxShadow: "0 4px 14px rgba(0,0,0,0.1)", cursor: "pointer" }}>
-            <div style={{ height: 168, background: o.bg, position: "relative" }}>
-              <img src={o.img} alt={o.store} style={{ width: "100%", height: "100%", objectFit: "cover", opacity: 0.38 }} />
-              <div style={{ position: "absolute", top: 14, left: 14 }}>
-                <span style={{ background: "rgba(255,255,255,0.92)", borderRadius: 8, padding: "4px 10px", fontSize: 12, fontWeight: 600, color: T1 }}>{o.store}</span>
+
+      {/* Offers Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {filteredOffers.map((o) => {
+          const canAfford = userPoints >= o.pts;
+          return (
+            <div
+              key={o.id}
+              onClick={() => go("offer-detail")}
+              className="group bg-white rounded-3xl border border-gray-200/80 overflow-hidden hover:shadow-xl hover:border-emerald-400 transition-all cursor-pointer flex flex-col justify-between"
+            >
+              <div>
+                <div className="h-48 relative overflow-hidden bg-gray-100">
+                  <img
+                    src={o.img}
+                    alt={o.store}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                  
+                  <div className="absolute top-3 left-3">
+                    <span className="bg-white/95 text-gray-900 text-xs font-bold px-3 py-1 rounded-full shadow-xs">
+                      {o.store}
+                    </span>
+                  </div>
+
+                  <div className="absolute bottom-3 left-3 right-3 text-white">
+                    <p className="text-2xl font-black leading-tight drop-shadow-xs">
+                      {o.discount}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="p-5">
+                  <div className="flex items-center justify-between text-xs mb-3">
+                    <span className="text-gray-500">Pontos necessários:</span>
+                    <span className={`font-black text-sm px-2.5 py-0.5 rounded-lg ${
+                      canAfford ? "bg-emerald-100 text-emerald-800" : "bg-gray-100 text-gray-600"
+                    }`}>
+                      {o.pts} pts
+                    </span>
+                  </div>
+
+                  <p className="text-xs text-gray-400">Válido até {o.valid}</p>
+                </div>
               </div>
-              <div style={{ position: "absolute", bottom: 14, left: 14, right: 14 }}>
-                <p style={{ fontSize: 19, fontWeight: 700, color: "#fff", margin: "0 0 3px", textShadow: "0 1px 4px rgba(0,0,0,0.5)" }}>{o.pts} pontos = {o.discount} de desconto</p>
-                <p style={{ fontSize: 12, color: "rgba(255,255,255,0.85)", margin: 0 }}>Válido até {o.valid}</p>
+
+              <div className="p-5 pt-0">
+                <button
+                  onClick={(e) => handleRedeem(o, e)}
+                  disabled={!canAfford}
+                  className={`w-full py-3 px-4 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer ${
+                    canAfford
+                      ? "bg-emerald-600 hover:bg-emerald-700 text-white shadow-md shadow-emerald-600/20 active:scale-95"
+                      : "bg-gray-100 text-gray-400 cursor-not-allowed"
+                  }`}
+                >
+                  {canAfford ? (
+                    <>
+                      <Gift size={16} />
+                      <span>Resgatar Cupom</span>
+                    </>
+                  ) : (
+                    <span>Faltam {o.pts - userPoints} pontos</span>
+                  )}
+                </button>
               </div>
             </div>
-            <div style={{ background: "#fff", padding: "12px 16px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <div style={{ display: "flex", gap: 4, alignItems: "center" }}>
-                <Star size={13} color={GOLD} fill={GOLD} />
-                <span style={{ fontSize: 13, fontWeight: 600, color: T1 }}>Você tem 1.250 pts</span>
-              </div>
-              <button onClick={(e) => { e.stopPropagation(); go("qr-code"); }} style={{ padding: "8px 16px", background: G, borderRadius: 20, border: "none", color: "#fff", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>Resgatar</button>
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

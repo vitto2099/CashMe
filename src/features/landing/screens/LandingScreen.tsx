@@ -1,203 +1,214 @@
-import { useState } from "react";
-import { ShoppingBag, User, Store, ChevronRight, LogIn, Lock, Mail, X } from "lucide-react";
-import { G, GD, P, PD, T1, T2, BG, BD } from "@/constants/theme";
+﻿import { useState } from "react";
+import {
+  ShoppingBag,
+  User,
+  Store,
+  ChevronRight,
+  QrCode,
+  ShieldCheck,
+  TrendingUp,
+  Sparkles,
+  ArrowRight,
+  Coins,
+  CheckCircle2,
+} from "lucide-react";
+import { G, GD, P, PD } from "@/constants/theme";
 import type { AppMode } from "@/types/navigation";
 import { useAuth } from "@/context/AuthContext";
+import { AuthModal } from "@/components/layout/AuthModal";
 
 interface LandingScreenProps {
   onSelect: (m: AppMode) => void;
 }
 
 export function LandingScreen({ onSelect }: LandingScreenProps) {
-  const { user, isAuthenticated, login, signup, logout } = useAuth();
-  const [showAuthModal, setShowAuthModal] = useState(false);
+  const { user, isAuthenticated, logout } = useAuth();
+  const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [authMode, setAuthMode] = useState<"login" | "signup">("login");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [fullName, setFullName] = useState("");
-  const [loading, setLoading] = useState(false);
 
-  const handleAuth = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    if (authMode === "login") {
-      const ok = await login({ email, password });
-      if (ok) {
-        setShowAuthModal(false);
-        onSelect("consumer");
-      }
-    } else {
-      const ok = await signup({
-        fullName,
-        email,
-        password,
-        passwordConfirmation: password,
-      });
-      if (ok) {
-        setShowAuthModal(false);
-        onSelect("consumer");
-      }
-    }
-    setLoading(false);
+  const openAuth = (mode: "login" | "signup") => {
+    setAuthMode(mode);
+    setIsAuthOpen(true);
   };
 
   return (
-    <div style={{ flex: 1, display: "flex", flexDirection: "column", padding: 24, background: BG, position: "relative" }}>
-      {/* Indicador de Usuário Conectado */}
-      {isAuthenticated && user && (
-        <div style={{ background: "#DCFCE7", border: "1px solid #86EFAC", borderRadius: 12, padding: "10px 14px", display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <div style={{ width: 28, height: 28, borderRadius: "50%", background: G, color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 700 }}>
-              {user.initials || "U"}
-            </div>
-            <div>
-              <p style={{ margin: 0, fontSize: 13, fontWeight: 600, color: "#166534" }}>{user.fullName || "Usuário"}</p>
-              <p style={{ margin: 0, fontSize: 11, color: "#15803D" }}>Sessão ativa na API</p>
-            </div>
+    <div className="w-full bg-gradient-to-b from-emerald-50/50 via-white to-gray-50 flex flex-col flex-1">
+      {/* Hero Section */}
+      <section className="relative overflow-hidden pt-12 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+        {/* Background decorative glows */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-96 bg-gradient-to-r from-emerald-200/20 via-purple-200/20 to-emerald-200/20 blur-3xl -z-10 pointer-events-none" />
+
+        <div className="text-center max-w-3xl mx-auto">
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-100/80 border border-emerald-200 text-emerald-800 text-xs font-bold mb-6 shadow-xs">
+            <Sparkles size={14} className="text-emerald-600" />
+            <span>Plataforma Oficial de Fidelidade & NFC-e (SC & PR)</span>
           </div>
-          <button
-            onClick={() => logout()}
-            style={{ border: "none", background: "none", color: "#B91C1C", fontSize: 12, fontWeight: 600, cursor: "pointer" }}
-          >
-            Sair
-          </button>
-        </div>
-      )}
 
-      <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-        <div style={{ width: 80, height: 80, background: `linear-gradient(135deg,${G},${GD})`, borderRadius: 22, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16, boxShadow: `0 10px 28px rgba(0,141,76,0.35)` }}>
-          <ShoppingBag size={40} color="#fff" />
-        </div>
-        <h1 style={{ fontSize: 34, fontWeight: 700, color: T1, margin: "0 0 6px", letterSpacing: -1.5 }}>cash me</h1>
-        <p style={{ fontSize: 15, color: T2, margin: "0 0 32px", textAlign: "center", lineHeight: 1.5 }}>Plataforma de fidelidade para<br />estabelecimentos locais</p>
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-gray-900 tracking-tight leading-[1.1] mb-6">
+            O cashback que valoriza o <span className="bg-gradient-to-r from-emerald-600 to-emerald-800 bg-clip-text text-transparent">comércio local</span>
+          </h1>
 
-        <p style={{ fontSize: 12, fontWeight: 700, color: T2, textTransform: "uppercase", letterSpacing: 1.5, margin: "0 0 16px" }}>Como você quer entrar?</p>
+          <p className="text-base sm:text-lg text-gray-600 leading-relaxed mb-8 max-w-2xl mx-auto">
+            Escaneie o QR Code das suas notas fiscais de compras diárias, acumule pontos automáticos e resgate recompensas exclusivas nas suas lojas favoritas.
+          </p>
 
-        <button onClick={() => onSelect("consumer")} style={{ width: "100%", padding: "18px 20px", background: `linear-gradient(135deg,${G},${GD})`, borderRadius: 18, border: "none", marginBottom: 12, display: "flex", alignItems: "center", gap: 16, cursor: "pointer", boxShadow: `0 6px 20px rgba(0,141,76,0.28)` }}>
-          <div style={{ width: 50, height: 50, background: "rgba(255,255,255,0.2)", borderRadius: 14, display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <User size={24} color="#fff" />
-          </div>
-          <div style={{ textAlign: "left" }}>
-            <p style={{ fontSize: 16, fontWeight: 700, color: "#fff", margin: "0 0 2px" }}>Sou consumidor</p>
-            <p style={{ fontSize: 13, color: "rgba(255,255,255,0.8)", margin: 0 }}>Acumule e resgate pontos</p>
-          </div>
-          <ChevronRight size={20} color="rgba(255,255,255,0.7)" style={{ marginLeft: "auto" }} />
-        </button>
-
-        <button onClick={() => onSelect("merchant")} style={{ width: "100%", padding: "18px 20px", background: `linear-gradient(135deg,${P},${PD})`, borderRadius: 18, border: "none", display: "flex", alignItems: "center", gap: 16, cursor: "pointer", boxShadow: `0 6px 20px rgba(111,53,181,0.28)`, marginBottom: 14 }}>
-          <div style={{ width: 50, height: 50, background: "rgba(255,255,255,0.2)", borderRadius: 14, display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <Store size={24} color="#fff" />
-          </div>
-          <div style={{ textAlign: "left" }}>
-            <p style={{ fontSize: 16, fontWeight: 700, color: "#fff", margin: "0 0 2px" }}>Sou comerciante</p>
-            <p style={{ fontSize: 13, color: "rgba(255,255,255,0.8)", margin: 0 }}>Gerencie campanhas e clientes</p>
-          </div>
-          <ChevronRight size={20} color="rgba(255,255,255,0.7)" style={{ marginLeft: "auto" }} />
-        </button>
-
-        {!isAuthenticated && (
-          <button
-            onClick={() => setShowAuthModal(true)}
-            style={{ width: "100%", padding: "12px", background: "#fff", borderRadius: 14, border: `1px solid ${BD}`, display: "flex", alignItems: "center", justifyContent: "center", gap: 8, cursor: "pointer", color: T1, fontWeight: 600, fontSize: 14 }}
-          >
-            <LogIn size={16} color={G} />
-            Entrar ou Criar Conta na API
-          </button>
-        )}
-      </div>
-
-      <p style={{ fontSize: 12, color: "#9CA3AF", textAlign: "center", margin: 0 }}>Cash Me © 2026 · Projeto Unificado</p>
-
-      {/* Modal de Autenticação */}
-      {showAuthModal && (
-        <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.5)", backdropFilter: "blur(4px)", display: "flex", alignItems: "center", justifyContent: "center", padding: 20, zIndex: 100 }}>
-          <div style={{ background: "#fff", borderRadius: 20, width: "100%", maxWidth: 350, padding: 24, boxShadow: "0 20px 40px rgba(0,0,0,0.2)" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-              <h3 style={{ margin: 0, fontSize: 18, fontWeight: 700, color: T1 }}>
-                {authMode === "login" ? "Entrar na Conta" : "Criar Conta na API"}
-              </h3>
-              <button onClick={() => setShowAuthModal(false)} style={{ border: "none", background: "none", cursor: "pointer" }}>
-                <X size={20} color="#9CA3AF" />
-              </button>
-            </div>
-
-            <div style={{ display: "flex", background: "#F3F4F6", padding: 4, borderRadius: 10, marginBottom: 16 }}>
-              <button
-                type="button"
-                onClick={() => setAuthMode("login")}
-                style={{ flex: 1, padding: "8px", border: "none", borderRadius: 8, background: authMode === "login" ? "#fff" : "transparent", fontWeight: 600, fontSize: 13, color: authMode === "login" ? G : T2, cursor: "pointer" }}
-              >
-                Login
-              </button>
-              <button
-                type="button"
-                onClick={() => setAuthMode("signup")}
-                style={{ flex: 1, padding: "8px", border: "none", borderRadius: 8, background: authMode === "signup" ? "#fff" : "transparent", fontWeight: 600, fontSize: 13, color: authMode === "signup" ? G : T2, cursor: "pointer" }}
-              >
-                Cadastro
-              </button>
-            </div>
-
-            <form onSubmit={handleAuth} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-              {authMode === "signup" && (
+          {/* Quick Choice Buttons */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-xl mx-auto mb-10">
+            <button
+              onClick={() => onSelect("consumer")}
+              className="p-5 rounded-2xl text-white shadow-xl shadow-emerald-700/20 hover:shadow-emerald-700/30 transition-all hover:-translate-y-0.5 cursor-pointer text-left flex items-center justify-between group"
+              style={{ background: `linear-gradient(135deg, ${G}, ${GD})` }}
+            >
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center">
+                  <User size={24} className="text-white" />
+                </div>
                 <div>
-                  <label style={{ fontSize: 12, fontWeight: 600, color: T2, display: "block", marginBottom: 4 }}>Nome Completo</label>
-                  <div style={{ display: "flex", alignItems: "center", gap: 8, border: `1px solid ${BD}`, borderRadius: 10, padding: "10px 12px" }}>
-                    <User size={16} color="#9CA3AF" />
-                    <input
-                      type="text"
-                      required
-                      placeholder="Ex: Ana Silva"
-                      value={fullName}
-                      onChange={(e) => setFullName(e.target.value)}
-                      style={{ border: "none", outline: "none", flex: 1, fontSize: 14 }}
-                    />
-                  </div>
-                </div>
-              )}
-
-              <div>
-                <label style={{ fontSize: 12, fontWeight: 600, color: T2, display: "block", marginBottom: 4 }}>E-mail</label>
-                <div style={{ display: "flex", alignItems: "center", gap: 8, border: `1px solid ${BD}`, borderRadius: 10, padding: "10px 12px" }}>
-                  <Mail size={16} color="#9CA3AF" />
-                  <input
-                    type="email"
-                    required
-                    placeholder="seu@email.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    style={{ border: "none", outline: "none", flex: 1, fontSize: 14 }}
-                  />
+                  <h3 className="font-bold text-base leading-tight">Sou Consumidor</h3>
+                  <p className="text-xs text-emerald-100 mt-0.5">Acumule e resgate pontos</p>
                 </div>
               </div>
+              <ArrowRight size={18} className="text-white/80 group-hover:translate-x-1 transition-transform" />
+            </button>
 
-              <div>
-                <label style={{ fontSize: 12, fontWeight: 600, color: T2, display: "block", marginBottom: 4 }}>Senha</label>
-                <div style={{ display: "flex", alignItems: "center", gap: 8, border: `1px solid ${BD}`, borderRadius: 10, padding: "10px 12px" }}>
-                  <Lock size={16} color="#9CA3AF" />
-                  <input
-                    type="password"
-                    required
-                    placeholder="Mínimo 8 caracteres"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    style={{ border: "none", outline: "none", flex: 1, fontSize: 14 }}
-                  />
+            <button
+              onClick={() => onSelect("merchant")}
+              className="p-5 rounded-2xl text-white shadow-xl shadow-purple-700/20 hover:shadow-purple-700/30 transition-all hover:-translate-y-0.5 cursor-pointer text-left flex items-center justify-between group"
+              style={{ background: `linear-gradient(135deg, ${P}, ${PD})` }}
+            >
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center">
+                  <Store size={24} className="text-white" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-base leading-tight">Sou Lojista</h3>
+                  <p className="text-xs text-purple-100 mt-0.5">Gerencie vendas e fidelidade</p>
                 </div>
               </div>
+              <ArrowRight size={18} className="text-white/80 group-hover:translate-x-1 transition-transform" />
+            </button>
+          </div>
 
+          {/* User Session Bar or Auth Triggers */}
+          {isAuthenticated && user ? (
+            <div className="inline-flex items-center gap-4 px-5 py-2.5 bg-white rounded-full border border-gray-200 shadow-sm">
+              <div className="flex items-center gap-2">
+                <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="text-xs font-semibold text-gray-700">
+                  Conectado como <strong className="text-gray-900">{user.fullName || user.email}</strong>
+                </span>
+              </div>
               <button
-                type="submit"
-                disabled={loading}
-                style={{ marginTop: 8, padding: "12px", background: `linear-gradient(135deg,${G},${GD})`, color: "#fff", border: "none", borderRadius: 12, fontWeight: 700, fontSize: 14, cursor: "pointer", opacity: loading ? 0.7 : 1 }}
+                onClick={() => logout()}
+                className="text-xs text-red-600 font-bold hover:underline cursor-pointer"
               >
-                {loading ? "Processando..." : authMode === "login" ? "Entrar" : "Cadastrar na API"}
+                Sair
               </button>
-            </form>
+            </div>
+          ) : (
+            <div className="flex items-center justify-center gap-3 text-xs text-gray-500">
+              <span>Já possui conta no Cash Me?</span>
+              <button
+                onClick={() => openAuth("login")}
+                className="text-emerald-700 font-bold hover:underline cursor-pointer"
+              >
+                Fazer Login na API
+              </button>
+              <span>•</span>
+              <button
+                onClick={() => openAuth("signup")}
+                className="text-gray-700 font-bold hover:underline cursor-pointer"
+              >
+                Cadastrar-se
+              </button>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* How it Works (3 Steps) */}
+      <section className="py-16 bg-white border-y border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">
+              Como funciona o Cash Me
+            </h2>
+            <p className="text-sm text-gray-500 mt-2">
+              Tecnologia sem atrito: transforme qualquer compra do dia a dia em recompensas
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="p-6 rounded-2xl bg-gray-50 border border-gray-100 hover:border-emerald-200 transition-colors">
+              <div className="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-lg mb-4">
+                1
+              </div>
+              <h3 className="text-base font-bold text-gray-900 mb-2">Compre no Comércio Parceiro</h3>
+              <p className="text-xs text-gray-600 leading-relaxed">
+                Faça suas compras diárias em padarias, mercados, farmácias e restaurantes locais e receba sua NFC-e impressa.
+              </p>
+            </div>
+
+            <div className="p-6 rounded-2xl bg-gray-50 border border-gray-100 hover:border-emerald-200 transition-colors">
+              <div className="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-lg mb-4">
+                2
+              </div>
+              <h3 className="text-base font-bold text-gray-900 mb-2">Escaneie o QR da NFC-e</h3>
+              <p className="text-xs text-gray-600 leading-relaxed">
+                Abra a câmera do Cash Me e aponte para o QR Code da nota fiscal. O sistema valida na SEFAZ e reconhece o CNPJ da loja.
+              </p>
+            </div>
+
+            <div className="p-6 rounded-2xl bg-gray-50 border border-gray-100 hover:border-emerald-200 transition-colors">
+              <div className="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-lg mb-4">
+                3
+              </div>
+              <h3 className="text-base font-bold text-gray-900 mb-2">Pontos & Resgates Imediatos</h3>
+              <p className="text-xs text-gray-600 leading-relaxed">
+                Seus pontos caem na carteira digital na hora! Troque por descontos na próxima compra ou produtos exclusivos da vitrine.
+              </p>
+            </div>
           </div>
         </div>
-      )}
+      </section>
+
+      {/* Trust & Architecture Badges */}
+      <section className="py-14 bg-gray-50/50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+            <div className="p-4 bg-white rounded-xl border border-gray-200/60 shadow-xs">
+              <ShieldCheck size={28} className="mx-auto text-emerald-600 mb-2" />
+              <h4 className="text-sm font-bold text-gray-900">Anti-Fraude Oficial</h4>
+              <p className="text-[11px] text-gray-500 mt-1">Chave de 44 dígitos validada uma única vez</p>
+            </div>
+
+            <div className="p-4 bg-white rounded-xl border border-gray-200/60 shadow-xs">
+              <QrCode size={28} className="mx-auto text-emerald-600 mb-2" />
+              <h4 className="text-sm font-bold text-gray-900">SEFAZ SC & PR</h4>
+              <p className="text-[11px] text-gray-500 mt-1">Integração homologada para notas fiscais</p>
+            </div>
+
+            <div className="p-4 bg-white rounded-xl border border-gray-200/60 shadow-xs">
+              <TrendingUp size={28} className="mx-auto text-purple-600 mb-2" />
+              <h4 className="text-sm font-bold text-gray-900">Fator Customizável</h4>
+              <p className="text-[11px] text-gray-500 mt-1">Lojista escolhe sua própria regra de R$ para Pts</p>
+            </div>
+
+            <div className="p-4 bg-white rounded-xl border border-gray-200/60 shadow-xs">
+              <Coins size={28} className="mx-auto text-emerald-600 mb-2" />
+              <h4 className="text-sm font-bold text-gray-900">Direito Adquirido</h4>
+              <p className="text-[11px] text-gray-500 mt-1">O saldo do consumidor é vitalício e garantido</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <AuthModal
+        isOpen={isAuthOpen}
+        onClose={() => setIsAuthOpen(false)}
+        defaultMode={authMode}
+      />
     </div>
   );
 }
-

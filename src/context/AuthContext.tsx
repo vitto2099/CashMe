@@ -1,4 +1,4 @@
-﻿import {
+import {
   createContext,
   useContext,
   useState,
@@ -20,6 +20,8 @@ interface AuthContextType {
   isLoading: boolean;
   login: (credentials: LoginDTO) => Promise<boolean>;
   signup: (data: SignupDTO) => Promise<boolean>;
+  signupCustomer: (data: any) => Promise<boolean>;
+  signupEstablishment: (data: any) => Promise<boolean>;
   logout: () => Promise<void>;
   refreshProfile: () => Promise<void>;
 }
@@ -91,6 +93,36 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const signupCustomer = async (data: any): Promise<boolean> => {
+    try {
+      const response = await authService.signupCustomer(data);
+      setToken(response.token);
+      setUser(response.user);
+      localStorage.setItem(TOKEN_KEY, response.token);
+      localStorage.setItem(USER_KEY, JSON.stringify(response.user));
+      toast.success("Conta de Consumidor criada com sucesso! 🎉");
+      return true;
+    } catch (err: any) {
+      toast.error(err.message || "Erro ao criar conta de consumidor.");
+      return false;
+    }
+  };
+
+  const signupEstablishment = async (data: any): Promise<boolean> => {
+    try {
+      const response = await authService.signupEstablishment(data);
+      setToken(response.token);
+      setUser(response.user);
+      localStorage.setItem(TOKEN_KEY, response.token);
+      localStorage.setItem(USER_KEY, JSON.stringify(response.user));
+      toast.success("Conta de Lojista criada com sucesso! 🏪");
+      return true;
+    } catch (err: any) {
+      toast.error(err.message || "Erro ao criar conta de estabelecimento.");
+      return false;
+    }
+  };
+
   const logout = async () => {
     try {
       await authService.logout();
@@ -124,6 +156,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         isLoading,
         login,
         signup,
+        signupCustomer,
+        signupEstablishment,
         logout,
         refreshProfile,
       }}

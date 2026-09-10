@@ -1,4 +1,4 @@
-﻿import { test } from "@japa/runner";
+import { test } from "@japa/runner";
 import User from "#models/user";
 
 test.group("Auth API — Testes Exploratórios", (group) => {
@@ -103,5 +103,14 @@ test.group("Auth API — Testes Exploratórios", (group) => {
 
     response.assertStatus(200);
     assert.equal(response.body().message, "Logged out successfully");
+  });
+
+  test("deve renderizar a documentação OpenAPI em /swagger e a UI em /docs", async ({ client, assert }) => {
+    const swaggerRes = await client.get("/swagger");
+    swaggerRes.assertStatus(200);
+    assert.isNotNull(swaggerRes.body());
+
+    const docsRes = await client.get("/docs");
+    docsRes.assertStatus(200);
   });
 });

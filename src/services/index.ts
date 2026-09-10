@@ -5,3 +5,4 @@ export * from "./offersService";
 export * from "./customersService";
 export * from "./transactionsService";
 export * from "./campaignsService";
+export * from "./nfceService";

@@ -1,4 +1,4 @@
-﻿{
+{
   "extends": "@adonisjs/tsconfig/tsconfig.app.json",
   "compilerOptions": {
     "rootDir": "./",
@@ -25,5 +25,6 @@
       "#start/*": ["./start/*"],
       "#config/*": ["./config/*"]
     }
-  }
+  },
+  "exclude": ["src/**/*", "dist/**/*", "scratch/**/*", "node_modules"]
 }

@@ -1,9 +1,29 @@
 import { api } from "./api";
 
+export interface CustomerProfile {
+  id: number;
+  fullName: string;
+  cpf?: string | null;
+  phone?: string | null;
+  authProvider?: string;
+  termsAcceptedAt?: string | null;
+  deviceToken?: string | null;
+}
+
+export interface EstablishmentProfile {
+  id: number;
+  fullName: string;
+  role: string;
+  establishmentId?: number | null;
+}
+
 export interface AuthUser {
   id: number;
   fullName: string | null;
   email: string;
+  userType?: "CUSTOMER" | "ESTABLISHMENT";
+  status?: string;
+  lastLoginAt?: string | null;
   initials?: string;
   createdAt?: string;
   updatedAt?: string;
@@ -12,6 +32,7 @@ export interface AuthUser {
 export interface AuthResponse {
   user: AuthUser;
   token: string;
+  profile?: CustomerProfile | EstablishmentProfile;
 }
 
 export interface SignupDTO {
@@ -19,6 +40,18 @@ export interface SignupDTO {
   email: string;
   password: string;
   passwordConfirmation: string;
+}
+
+export interface SignupCustomerDTO extends SignupDTO {
+  cpf?: string;
+  phone?: string;
+  termsAccepted: boolean;
+  deviceToken?: string;
+}
+
+export interface SignupEstablishmentDTO extends SignupDTO {
+  role?: "SUPER_ADMIN" | "LOJISTA_ADMIN" | "LOJISTA_OPERADOR";
+  establishmentId?: number;
 }
 
 export interface LoginDTO {
@@ -36,10 +69,26 @@ export const authService = {
   },
 
   /**
-   * Cadastra novo usuário na API AdonisJS
+   * Cadastra novo usuário genérico na API AdonisJS
    */
   async signup(data: SignupDTO): Promise<AuthResponse> {
     const res = await api.post<any>("/auth/signup", data);
+    return res.data || res;
+  },
+
+  /**
+   * Cadastra novo Consumidor na API AdonisJS (Task #02)
+   */
+  async signupCustomer(data: SignupCustomerDTO): Promise<AuthResponse> {
+    const res = await api.post<any>("/auth/customer/signup", data);
+    return res.data || res;
+  },
+
+  /**
+   * Cadastra novo Lojista/Estabelecimento na API AdonisJS (Task #01)
+   */
+  async signupEstablishment(data: SignupEstablishmentDTO): Promise<AuthResponse> {
+    const res = await api.post<any>("/auth/establishment/signup", data);
     return res.data || res;
   },
 
@@ -52,6 +101,22 @@ export const authService = {
   },
 
   /**
+   * Busca perfil do Consumidor autenticado
+   */
+  async getCustomerProfile(): Promise<{ user: AuthUser; profile: CustomerProfile }> {
+    const res = await api.get<any>("/account/customer/profile");
+    return res.data || res;
+  },
+
+  /**
+   * Busca perfil do Lojista autenticado
+   */
+  async getEstablishmentProfile(): Promise<{ user: AuthUser; profile: EstablishmentProfile }> {
+    const res = await api.get<any>("/account/establishment/profile");
+    return res.data || res;
+  },
+
+  /**
    * Encerra sessão e revoga o token no backend
    */
   async logout(): Promise<{ message: string }> {
@@ -59,4 +124,3 @@ export const authService = {
     return res.data || res;
   },
 };
-

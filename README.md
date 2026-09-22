@@ -1,4 +1,4 @@
-﻿# 🛍️ Cash Me — Plataforma Full-Stack Integrada
+# 🛍️ Cash Me — Plataforma Full-Stack Integrada
 
 > Sistema completo de fidelidade e cashback baseado em escaneamento de NFC-e (Notas Fiscais de Consumidor Eletrônica), conectando **consumidores** e **comerciantes locais**.
 
@@ -10,12 +10,13 @@ Para detalhes aprofundados sobre cada camada do projeto, consulte os guias dedic
 
 - ⚛️ **[README do Frontend (React + Vite + Tailwind v4)](./README_FRONT.md)** — Detalhamento de todas as telas (9 do Consumidor e 11 do Comerciante), componentes do Design System, `AuthContext` e camada de serviços.
 - 🔧 **[README do Backend (AdonisJS v7 + Lucid + SQLite)](./README_BACK.md)** — Detalhamento das rotas REST, payloads de request/response, regras de negócio (RN01 a RN08), modelo de dados e suíte de testes com Japa.
+- 👥 **[Matriz de Contribuições & Atribuições (Vitor, Stela, Hugo)](./docs/CONTRIBUICOES.md)** — Detalhamento técnico de responsabilidades e histórico de commits entre os contribuidores.
 
 ---
 
 ## 🏗️ Visão Geral da Arquitetura
 
-O projeto foi consolidado em um **repositório full-stack único**, integrando o backend da API oficial ([stela-oliveira/cash-me-api](https://github.com/stela-oliveira/cash-me-api.git)) e o frontend React na mesma raiz:
+O projeto foi consolidado em um **repositório full-stack unificado** ([vitto2099/CashMe](https://github.com/vitto2099/CashMe)), integrando a base da API de autenticação ([stela-oliveira/cash-me-api](https://github.com/stela-oliveira/cash-me-api)), a prova de conceito de scraping e motor fiscal ([hugobatista27/web-scrap-app](https://github.com/hugobatista27/web-scrap-app)), e o frontend web e aplicativo mobile em uma única raiz:
 
 ```
 TESTE CASH ME/
